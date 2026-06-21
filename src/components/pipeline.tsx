@@ -23,6 +23,36 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
 const statusColors = ["#1d4ed8", "#f59e0b", "#0f172a", "#10b981", "#8b5cf6"]
 
+type ChartValue = number | string | Array<number | string> | undefined
+
+function getNumericValue(value: ChartValue) {
+  if (typeof value === "number") {
+    return value
+  }
+
+  if (Array.isArray(value)) {
+    const first = value[0]
+    return typeof first === "number" ? first : Number(first)
+  }
+
+  return typeof value === "string" ? Number(value) : Number.NaN
+}
+
+function formatCurrencyTooltip(value: ChartValue) {
+  const numericValue = getNumericValue(value)
+  return Number.isFinite(numericValue) ? formatCurrency(numericValue) : "-"
+}
+
+function formatPercentTooltip(value: ChartValue) {
+  const numericValue = getNumericValue(value)
+  return Number.isFinite(numericValue) ? `${numericValue}%` : "-"
+}
+
+function formatJobsTooltip(value: ChartValue) {
+  const numericValue = getNumericValue(value)
+  return Number.isFinite(numericValue) ? `${numericValue} jobs` : "-"
+}
+
 export function Pipeline({
   pipeline,
   revenue,
@@ -64,7 +94,7 @@ export function Pipeline({
                 tickFormatter={(value) => `$${Math.round(value / 1000)}k`}
               />
               <Tooltip
-                formatter={(value: number) => formatCurrency(value)}
+                formatter={formatCurrencyTooltip}
                 contentStyle={{ borderRadius: 16, border: "1px solid #e2e8f0" }}
               />
               <Area
@@ -99,7 +129,7 @@ export function Pipeline({
               <XAxis dataKey="stage" stroke="#64748b" fontSize={12} />
               <YAxis stroke="#64748b" fontSize={12} domain={[0, 100]} />
               <Tooltip
-                formatter={(value: number) => `${value}%`}
+                formatter={formatPercentTooltip}
                 contentStyle={{ borderRadius: 16, border: "1px solid #e2e8f0" }}
               />
               <Line
@@ -136,7 +166,7 @@ export function Pipeline({
                 ))}
               </Pie>
               <Tooltip
-                formatter={(value: number) => `${value} jobs`}
+                formatter={formatJobsTooltip}
                 contentStyle={{ borderRadius: 16, border: "1px solid #e2e8f0" }}
               />
             </PieChart>
@@ -158,7 +188,7 @@ export function Pipeline({
                 <XAxis dataKey="month" stroke="#64748b" fontSize={12} />
                 <YAxis stroke="#64748b" fontSize={12} />
                 <Tooltip
-                  formatter={(value: number) => formatCurrency(value)}
+                  formatter={formatCurrencyTooltip}
                   contentStyle={{ borderRadius: 16, border: "1px solid #e2e8f0" }}
                 />
                 <Bar dataKey="collected" fill="#f59e0b" radius={[10, 10, 0, 0]} />
