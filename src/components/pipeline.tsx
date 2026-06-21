@@ -23,7 +23,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
 const statusColors = ["#1d4ed8", "#f59e0b", "#0f172a", "#10b981", "#8b5cf6"]
 
-type ChartValue = number | string | Array<number | string> | undefined
+type ChartValue =
+  | number
+  | string
+  | readonly (number | string)[]
+  | undefined
 
 function getNumericValue(value: ChartValue) {
   if (typeof value === "number") {
