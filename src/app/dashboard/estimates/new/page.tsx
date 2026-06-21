@@ -14,8 +14,8 @@ const estimateSchema = z.object({
   customerName: z.string().min(2, "Customer name is required."),
   projectType: z.string().min(2, "Project type is required."),
   address: z.string().min(5, "Project address is required."),
-  estimatedValue: z.coerce.number().min(1000, "Value must be at least $1,000."),
-  depositPercent: z.coerce.number().min(10).max(80),
+  estimatedValue: z.number().min(1000, "Value must be at least $1,000."),
+  depositPercent: z.number().min(10).max(80),
   scope: z.string().min(20, "Add enough scope detail for the crew."),
 })
 
@@ -86,7 +86,7 @@ export default function NewEstimatePage() {
             >
               <Input
                 type="number"
-                {...form.register("estimatedValue")}
+                {...form.register("estimatedValue", { valueAsNumber: true })}
                 className="h-11 rounded-2xl"
               />
             </Field>
@@ -96,7 +96,7 @@ export default function NewEstimatePage() {
             >
               <Input
                 type="number"
-                {...form.register("depositPercent")}
+                {...form.register("depositPercent", { valueAsNumber: true })}
                 className="h-11 rounded-2xl"
               />
             </Field>
