@@ -24,6 +24,7 @@ export function DataTable<T extends { id: string }>({
   columns,
   data,
   rowHref,
+  emptyState,
 }: {
   columns: Column<T>[]
   data: T[]
